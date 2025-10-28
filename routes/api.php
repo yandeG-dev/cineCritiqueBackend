@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
  use App\Http\Controllers\PasswordResetController;
+ use App\Http\Controllers\FilmController;
+
+ //Route for authentication and password reset
 Route::group([
     'middleware' => 'api',
     'prefix' => 'auth'
@@ -15,5 +18,13 @@ Route::group([
       Route::post('/forgot-password', [PasswordResetController::class, 'forgot'])->name('forgot');
     Route::post('/reset-password', [PasswordResetController::class, 'reset'])->name('reset');
 });
+//routes for movie data
+Route::middleware('api')->group(function () {
+Route::get('/movies/popular', [FilmController::class, 'popular']);
+Route::get('/movies/search', [FilmController::class, 'search']);
+Route::get('/movies/{id}', [FilmController::class, 'details']);
+// Route pour films filtrés
+Route::get('/movies/filter', [FilmController::class, 'filtered']);
 
+});
 
