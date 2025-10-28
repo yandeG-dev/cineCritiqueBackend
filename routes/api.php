@@ -21,10 +21,12 @@ Route::group([
 //routes for movie data
 Route::middleware('api')->group(function () {
 Route::get('/movies/popular', [FilmController::class, 'popular']);
+// Route pour recherche de films
 Route::get('/movies/search', [FilmController::class, 'search']);
+// Route pour détails d'un film
 Route::get('/movies/{id}', [FilmController::class, 'details']);
 // Route pour films filtrés
-Route::get('/movies/filter', [FilmController::class, 'filtered']);
+Route::get('/movies/filter', [FilmController::class, 'filtrated']);
 
 });
 

@@ -13,7 +13,7 @@ class FilmController extends Controller
     {
         $this->tmdb = $tmdb;
     }
-
+// Méthode pour les films populaires
     public function popular()
     {
         return response()->json([
@@ -21,7 +21,7 @@ class FilmController extends Controller
             'data' => $this->tmdb->getPopularMovies()
         ]);
     }
-
+// Méthode pour la recherche de films
     public function search(Request $request)
     {
         $query = $request->query('q');
@@ -34,7 +34,7 @@ class FilmController extends Controller
             'data' => $this->tmdb->searchMovies($query)
         ]);
     }
-
+// Méthode pour les détails d’un film
     public function details($id)
     {
         return response()->json([
@@ -42,8 +42,10 @@ class FilmController extends Controller
             'data' => $this->tmdb->getMovieDetails($id)
         ]);
     }
-    public function filtered(Request $request)
+    // Méthode pour les films filtrés 
+    public function filtrated(Request $request)
 {
+    // On récupère les paramètres de filtrage
     $filters = [
         'genre' => $request->query('genre'),       // id du genre TMDb
         'year' => $request->query('year'),         // ex: 2023
@@ -51,7 +53,16 @@ class FilmController extends Controller
         'sort_by' => $request->query('sort_by'),   // ex: popularity.desc
     ];
 
-    return response()->json($this->tmdb->getFilteredMovies($filters));
+    try {
+        $movies = $this->tmdb->getFiltratedMovies($filters);
+        return response()->json($movies);
+    } catch (\Exception $e) {
+        return response()->json([
+            'error' => 'Erreur lors du filtrage des films',
+            'message' => $e->getMessage()
+        ], 500);
+    }
 }
 
+  
 }
