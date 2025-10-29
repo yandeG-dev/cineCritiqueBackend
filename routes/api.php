@@ -19,14 +19,12 @@ Route::group([
     Route::post('/reset-password', [PasswordResetController::class, 'reset'])->name('reset');
 });
 //routes for movie data
+
+
 Route::middleware('api')->group(function () {
-Route::get('/movies/popular', [FilmController::class, 'popular']);
-// Route pour recherche de films
-Route::get('/movies/search', [FilmController::class, 'search']);
-// Route pour détails d'un film
-Route::get('/movies/{id}', [FilmController::class, 'details']);
-// Route pour films filtrés
-Route::get('/movies/filter', [FilmController::class, 'filtrated']);
+ Route::get('/movies/popular', [FilmController::class, 'getPopular'])->name('movies.popular');
+    //Route::get('/movies', [FilmController::class, 'index'])->name('movies.index');
+    Route::get('/movies/{id}', [FilmController::class, 'details'])->name('movies.details');
+ 
 
 });
-
