@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
  use App\Http\Controllers\PasswordResetController;
  use App\Http\Controllers\FilmController;
-
+use App\Http\Controllers\AvisController;
  //Route for authentication and password reset
 Route::group([
     'middleware' => 'api',
@@ -28,3 +28,16 @@ Route::middleware('api')->group(function () {
  
 
 });
+//routes for reviews (avis)
+
+Route::middleware('auth:api')->group(function () {
+    Route::post('/avis', [AvisController::class, 'store']); // Ajouter un avis
+    Route::get('/films/{film_id}/avis', [AvisController::class, 'index']); // Voir avis d’un film
+    Route::put('/avis/{id}', [AvisController::class, 'update']); // Modifier un avis
+    Route::delete('/avis/{id}', [AvisController::class, 'destroy']); // Supprimer un avis
+  
+
+});
+// Routes publiques
+Route::get('/films/{filmId}/avis', [AvisController::class, 'indexByFilm']);
+  Route::get('/avis/film/{film_id}', [AvisController::class, 'showByFilm']);
