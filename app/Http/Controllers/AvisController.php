@@ -57,29 +57,32 @@ class AvisController extends Controller
         return response()->json(['message' => 'Deleted']);
     }
 
-    // Afficher les critiques d’un film + moyenne
-    public function indexByFilm($filmId) {
-        $avis = Avis::with('user')
+    // Voir les critiques d’un film
+     public function indexByFilm($filmId)
+    {
+        $avis = Avis::with('user:id,pseudo') // charge le pseudo de l’auteur
             ->where('film_id', $filmId)
             ->get();
 
         $moyenne = $avis->avg('note');
 
+        $avisFormates = $avis->map(function ($a) {
+            return [
+                'id' => $a->id,
+                'film_id' => $a->film_id,
+                'note' => $a->note,
+                'commentaire' => $a->commentaire,
+                'pseudo' => $a->user ? $a->user->pseudo : 'Utilisateur inconnu',
+                'created_at' => $a->created_at,
+            ];
+        });
+
         return response()->json([
-            'moyenne' => round($moyenne, 2),
-            'avis' => $avis
+            'status' => 'success',
+            'data' => $avisFormates,
+            'moyenne' => round($moyenne, 2)
         ]);
     }
-    public function showByFilm($film_id)
-{
-    $avis = \App\Models\Avis::where('film_id', $film_id)->get();
-    $moyenne = $avis->avg('note');
 
-    return response()->json([
-        'status' => 'success',
-        'data' => $avis,
-        'moyenne' => round($moyenne, 2)
-    ]);
-}
 
 }
