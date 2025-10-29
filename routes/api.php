@@ -24,6 +24,8 @@ Route::group([
 
 Route::middleware('api')->group(function () {
  Route::get('/movies/popular', [FilmController::class, 'getPopular'])->name('movies.popular');
+ Route::get('/movies', [FilmController::class, 'index']);
+
     Route::get('/movies/{id}', [FilmController::class, 'details'])->name('movies.details');
  
 
